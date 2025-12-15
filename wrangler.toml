@@ -3,12 +3,12 @@
 #############################################
 
 name = "cf_ai_web_performance_coach"
-main = "src/server.ts"
+main = "./src/server.ts"
 compatibility_date = "2024-10-01"
 compatibility_flags = ["nodejs_compat"]
 
 #############################################
-# DURABLE OBJECTS (Agents SDK stores state)
+# DURABLE OBJECTS
 #############################################
 
 [durable_objects]
@@ -21,7 +21,7 @@ tag = "v1"
 new_sqlite_classes = ["Chat"]
 
 #############################################
-# OBSERVABILITY (Cloudflare recommended)
+# OBSERVABILITY
 #############################################
 
 [observability]
@@ -38,7 +38,3 @@ head_sampling_rate = 1
 enabled = false
 persist = true
 head_sampling_rate = 1
-[build]
-command = "true"                     # prevents local bundler issues
-upload.format = "modules"            # required for .ts module workers
-upload.main = "src/server.ts"        # FORCE entrypoint
