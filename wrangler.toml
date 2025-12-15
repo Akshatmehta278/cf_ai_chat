@@ -1,5 +1,5 @@
 name = "cloudflare-ai-chat"
-main = "src/index.js"
+main = "src/index.ts"
 compatibility_date = "2024-12-01"
 
 # Workers AI binding
@@ -9,8 +9,8 @@ binding = "AI"
 # D1 Database for persistent storage
 [[d1_databases]]
 binding = "DB"
-database_name = "chat_history"
-database_id = "your-database-id"
+database_name = "ai-chat-db"
+database_id = "6acba932-23c7-4ac3-94ae-ebc6148e7583"
 
 # Durable Objects for session management
 [[durable_objects.bindings]]
@@ -25,9 +25,6 @@ new_classes = ["ChatSession"]
 [vars]
 ENVIRONMENT = "production"
 
-# Build configuration
+# Disable TypeScript build for now
 [build]
-command = "npm run build"
-
-[build.upload]
-format = "service-worker"
+command = ""

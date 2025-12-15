@@ -77,18 +77,18 @@ export class AIAgent {
   }
 
   /**
-   * Call Workers AI with prepared messages
+   * Call Workers AI with prepared messages (No external API needed!)
    */
   private async callAI(messages: Message[]): Promise<AIResponse> {
-    const response = await this.env.AI.run(this.config.model, {
+    // Using Cloudflare Workers AI - completely free, no API keys required
+    const response = await this.env.AI.run(this.config.model as any, {
       messages: messages.map(m => ({
         role: m.role,
         content: m.content,
       })),
-      stream: false,
       max_tokens: this.config.maxTokens,
       temperature: this.config.temperature,
-    });
+    } as any);
 
     return response as AIResponse;
   }
