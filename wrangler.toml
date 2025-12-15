@@ -11,8 +11,3 @@ bindings = [
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["Chat"]
-
-[observability.logs]
-enabled = true
-persist = true
-invocation_logs = true

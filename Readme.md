@@ -1,3 +1,3 @@
-# WebPerfCoach AI
+# Cloudflare AI REST Agent
 
-Cloudflare Agents project.
+This is the final working version.

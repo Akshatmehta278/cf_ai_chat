@@ -1,3 +1,1 @@
-# PROMPTS
-
-- Initial prompts used to generate project.
+Initial prompt used to generate the agent.
