@@ -7,9 +7,9 @@
     "deploy": "wrangler deploy"
   },
   "dependencies": {
-    "ai": "latest",
     "@ai-sdk/openai": "latest",
-    "agents": "latest",
+    "agents": "^0.2.32",
+    "ai": "latest",
     "zod": "latest"
   }
 }
