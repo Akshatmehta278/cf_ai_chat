@@ -10,8 +10,6 @@ A production-ready, fully-featured AI chat application built entirely on Cloudfl
 
 **Try it now:** [https://cloudflare-ai-chat.mehtaakshat-27.workers.dev](https://cloudflare-ai-chat.mehtaakshat-27.workers.dev/)
 
-> 💡 **Note:** Replace with your actual deployment URL after running `npm run deploy`
-
 ## 🌟 Features
 
 ### Core Capabilities
