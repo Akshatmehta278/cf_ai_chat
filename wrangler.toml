@@ -2,8 +2,26 @@ name = "cf_ai_web_performance_coach"
 main = "src/server.ts"
 compatibility_date = "2024-10-01"
 
+# Durable Object binding for your Agent class
 durable_objects = { bindings = [{ name = "Chat", class_name = "Chat" }] }
 
+# Required because Durable Objects must have migrations
 migrations = [
   { tag = "v1", new_sqlite_classes = ["Chat"] }
 ]
+
+# ✔ Cloudflare recommendation: observability section
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+persist = true
+invocation_logs = true
+head_sampling_rate = 1
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1
