@@ -66,8 +66,8 @@ A production-ready, fully-featured AI chat application built entirely on Cloudfl
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/cloudflare-ai-chat.git
-   cd cloudflare-ai-chat
+   git clone [https://github.com/Akshatmehta278/cf_ai_chat](https://github.com/Akshatmehta278/cf_ai_chat)
+   cd cf_ai_chat
    ```
 
 2. **Install dependencies**
