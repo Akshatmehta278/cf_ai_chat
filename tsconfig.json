@@ -3,13 +3,6 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "moduleDetection": "force",
-    "esModuleInterop": true,
-    "allowJs": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "strict": false,
-    "types": ["@cloudflare/workers-types"]
-  },
-  "exclude": ["node_modules"]
+    "skipLibCheck": true
+  }
 }

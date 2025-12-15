@@ -1,3 +1,4 @@
+
 import { tool, type ToolSet } from "ai";
 import { z } from "zod";
 import { getCurrentAgent } from "agents";
@@ -5,71 +6,38 @@ import { scheduleSchema } from "agents/schedule";
 import type { Chat } from "./server";
 
 export const analyzeWebsite = tool({
-  description: "Fetch website HTML and audit for performance/security/accessibility.",
-  inputSchema: z.object({
-    url: z.string().url("Must be a valid URL including https://")
-  }),
+  description: "Fetch and analyze website HTML.",
+  inputSchema: z.object({ url: z.string().url() }),
   execute: async ({ url }) => {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
-
-    const html = await response.text();
-    const limit = 8000;
-
-    return {
-      url,
-      truncated: html.length > limit,
-      html: html.slice(0, limit)
-    };
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch ${url}`);
+    const html = await res.text();
+    return { url, html: html.slice(0, 8000), truncated: html.length > 8000 };
   }
 });
 
 export const scheduleAudit = tool({
-  description: "Schedule a future website audit.",
+  description: "Schedule audit.",
   inputSchema: scheduleSchema,
   execute: async ({ when, description }) => {
     const { agent } = getCurrentAgent<Chat>();
-    if (!agent) throw new Error("No agent context");
-
-    let scheduleInput;
-
-    switch (when.type) {
-      case "scheduled":
-        scheduleInput = when.date;
-        break;
-      case "delayed":
-        scheduleInput = when.delayInSeconds;
-        break;
-      case "cron":
-        scheduleInput = when.cron;
-        break;
-      default:
-        return "Invalid schedule.";
-    }
-
-    agent.schedule(scheduleInput, "executeTask", description);
-    return `Audit scheduled (${when.type}): ${description}`;
+    let input;
+    if (when.type === "scheduled") input = when.date;
+    if (when.type === "delayed") input = when.delayInSeconds;
+    if (when.type === "cron") input = when.cron;
+    agent.schedule(input!, "executeTask", description);
+    return `Scheduled: ${description}`;
   }
 });
 
 export const getScheduledAudits = tool({
-  description: "List all scheduled tasks",
+  description: "List audits.",
   inputSchema: z.object({}),
   execute: async () => {
     const { agent } = getCurrentAgent<Chat>();
-    if (!agent) throw new Error("No agent context");
-
-    const tasks = agent.getSchedules();
-    if (!tasks || tasks.length === 0) return "No scheduled tasks.";
-
-    return tasks;
+    return agent.getSchedules() || [];
   }
 });
 
-export const tools = {
-  analyzeWebsite,
-  scheduleAudit,
-  getScheduledAudits
-} satisfies ToolSet;
-
+export const tools = { analyzeWebsite, scheduleAudit, getScheduledAudits } satisfies ToolSet;
 export const executions = {};

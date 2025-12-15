@@ -1,3 +1,4 @@
+
 import { routeAgentRequest, type Schedule } from "agents";
 import { getSchedulePrompt } from "agents/schedule";
 import { AIChatAgent } from "agents/ai-chat-agent";
@@ -14,52 +15,30 @@ import { openai } from "@ai-sdk/openai";
 import { processToolCalls, cleanupMessages } from "./utils";
 import { tools, executions } from "./tools";
 
-// You can switch later to Workers AI
 const model = openai("gpt-4o-mini");
 
 export class Chat extends AIChatAgent {
-  async onChatMessage(
-    onFinish: StreamTextOnFinishCallback,
-    _options?: { abortSignal?: AbortSignal }
-  ) {
+  async onChatMessage(onFinish: StreamTextOnFinishCallback) {
     const allTools = { ...tools, ...this.mcp.getAITools() };
 
     const stream = createUIMessageStream({
       execute: async ({ writer }) => {
-        const cleanedMessages = cleanupMessages(this.messages);
-
-        const processedMessages = await processToolCalls({
-          messages: cleanedMessages,
+        const cleaned = cleanupMessages(this.messages);
+        const processed = await processToolCalls({
+          messages: cleaned,
           dataStream: writer,
           tools: allTools,
           executions
         });
 
         const systemPrompt = `
-You are WebPerfCoach — an AI agent that audits website URLs for:
-1. Performance
-2. Security hygiene
-3. Accessibility
-
-When user sends a URL:
-- Use "analyzeWebsite" tool to fetch HTML
-- Then return:
-  - Summary (3 lines)
-  - Performance checklist
-  - Security checklist
-  - Accessibility checklist
-  - Optional fixes
-
-If user asks to check later, call "scheduleAudit".
-
-If HTML is truncated, tell user.
-
+You are WebPerfCoach — analyze websites for performance, security, accessibility.
 ${getSchedulePrompt({ date: new Date() })}
         `.trim();
 
         const result = streamText({
           system: systemPrompt,
-          messages: convertToModelMessages(processedMessages),
+          messages: convertToModelMessages(processed),
           model,
           tools: allTools,
           onFinish: onFinish as any,
@@ -87,10 +66,7 @@ ${getSchedulePrompt({ date: new Date() })}
 }
 
 export default {
-  async fetch(request: Request, env: Env, _ctx: ExecutionContext) {
-    return (
-      (await routeAgentRequest(request, env)) ||
-      new Response("Not found", { status: 404 })
-    );
+  async fetch(req: Request, env: Env, ctx: ExecutionContext) {
+    return (await routeAgentRequest(req, env)) || new Response("Not found", { status: 404 });
   }
 };

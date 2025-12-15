@@ -1,7 +1,6 @@
 {
   "name": "cf_ai_web_performance_coach",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
