@@ -66,7 +66,7 @@ A production-ready, fully-featured AI chat application built entirely on Cloudfl
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/Akshatmehta278/cf_ai_chat]
+   git clone https://github.com/Akshatmehta278/cf_ai_chat
    cd cf_ai_chat
    ```
 
